@@ -1,6 +1,18 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Login', () => {
+test.describe('Login Page', () => {
+  test('Visit register page', async ({ page }) => {
+    await page.goto('https://poskasir.vercel.app/login');
+    await page.getByRole('link', { name: 'Daftar' }).click();
+    await expect(page).toHaveURL('https://poskasir.vercel.app/register');
+  });
+
+  test('Visit forgot pass page', async ({ page }) => {
+    await page.goto('https://poskasir.vercel.app/login');
+    await page.getByRole('link', { name: 'Lupa Kata Sandi?' }).click();
+    await expect(page).toHaveURL('https://poskasir.vercel.app/forgot-password');
+  });
+
   test('Empty Field', async ({ page }) => {
     await page.goto('https://poskasir.vercel.app/login');
     await page.getByRole('button', { name: 'Login' }).click();
@@ -24,7 +36,7 @@ test.describe('Login', () => {
     await expect(page.getByText('Email atau Password tidak sesuai').first()).toBeVisible();
   });
 
-  test('Invalid Account', async ({ page }) => {
+  test('Invalid Account', async ({ page }) => { // salah password
     await page.goto('https://poskasir.vercel.app/login');
     await page.getByRole('textbox', { name: 'example@kasirkita.com' }).click();
     await page.getByRole('textbox', { name: 'example@kasirkita.com' }).fill('web.kasirkita40@yopmail.com');
@@ -105,7 +117,6 @@ test('Field Check', async ({ page }) => {
 
   // Add an assertion to check that no warning message is visible
   await expect(page.getByText('Mengandung huruf, angka dan simbol')).toBeHidden();
-
 
 });
 
